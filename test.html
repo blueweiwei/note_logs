@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link href="css/wangeditor.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/smoke.css">
+    <script src="js/wangeditor.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/qs.min.js"></script>
+    <script src="js/smoke.min.js"></script>
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
+    <title>日志溪</title>
+</head>
+<script>
+    var status_on=true
+    // function checkStatus(){
+    //     axios.get('api/check.php').then(res=>{
+    //         console.log(res)
+    //         if(res.data=='400'){
+    //             clearInput()
+    //         }else{
+    //             status_on=true
+    //         }
+    //     }) 
+    // }
+    // checkStatus()
+</script>
+<body>
+    <div id="app">
+        <div id="nav-window">
+            <div id="logo" class="title3" title="一个简单的日志书写上传"><a href="/">日志溪</a></div>
+            <div class="site-group">
+                <a target="_blank" href="/list.html">时间轴</a>
+                <a target="_blank" href="http://blog.705705.xyz">博客</a>
+                <a target="_blank" href="/test.html">DEMO页</a>
+            </div>
+        </div>
+        <div class="section-title"><i>添加一条溪日志</i></div>
+        <div id="site-window" class="site-window">
+            <div class="input-window input-textarea" style="border: 1px red  soild;">
+                <div id="editor-container">
+                    <div id="title-container">
+                        <input id="input-title" placeholder="标题...">
+                        <div id="editor-text-area"></div>
+                    </div>
+                </div>
+                <div class="input-button" id="input-button">
+                    <button class="btn btn-default" onclick="upData()">提交</button>
+                </div>
+
+            </div>
+        </div>
+        <div id="footer-window" class="footer-window">
+            <div><a target="_blank" href="https://github.com/chenwansal/c10navigation"> GitHub-C10</a></div>
+            <div><i>作者: xxx</i>&nbsp; / &nbsp;<a target="_blank" href="mailto: xxxx">邮箱:
+                    xxxx</a>&nbsp; / &nbsp;<a target="_blank"
+                    href="xxx">xxxx</a></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var E = window.wangEditor; 
+    const { createEditor, createToolbar } = window.wangEditor
+    const editorConfig = {}
+    editorConfig.placeholder = '快，投入一条到日志溪吧！'
+    const toolbarConfig = {}
+    const editor = createEditor({
+        selector: '#editor-container',
+        config: editorConfig,
+        mode: 'default'
+    })
+    function showMess (message){
+        smoke.alert(
+            message,function(){},{ok: "确定"}
+        );
+    }
+    function clearInput(){
+        editor.clear()
+        document.getElementById('input-title').value=''
+        document.getElementsByClassName("w-e-text-container")[0].style.display = "none";
+        document.getElementById("input-button").style.display = "none";
+        document.getElementById('input-title').value='今天已经写日志了哦！'
+    }
+    function upData(){
+        if(status_on){
+            upLog()
+        }else{
+            showMess("出现未知错误，请联系管理员进行处理！")
+        }
+    }
+    function upLog(){
+        var html = editor.getHtml()
+        var text = editor.getText()
+        var title=document.getElementById('input-title').value;
+        var qs = Qs 
+        axios({
+            method: 'post',
+            url: 'https://getman.cn/mock/weiwei/0524',
+            data: qs.stringify({
+                html: html,
+                text: text,
+                title: title
+            }),
+        }).then(function (response) {
+            if(response.data=='200'){
+                showMess("上传日志成功！")
+                clearInput()
+            }else{
+                showMess("上传日志失败，请重新检测后提交！")
+            }
+        }).catch(function (error) {
+            showMess("出现未知错误，请联系管理员进行处理！")
+        });
+    }
+</script>
+
+</html>

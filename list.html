@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script src="js/axios.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/list.css">
+    <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
+    <title>日志溪</title>
+</head>
+<body>
+    <div id="app">
+        <div id="nav-window">
+            <div id="logo" class="title3" title="一个简单的日志书写上传"><a href="/">日志溪</a></div>
+            <div class="site-group">
+                <a target="_blank" href="/list.html">时间轴</a>
+                <a target="_blank" href="http://blog.705705.xyz">博客</a>
+                <a target="_blank" href="/test.html">DEMO页</a>
+            </div>
+        </div>
+        <div class="section-title"><i>时间轴</i></div>
+        <div id="site-window" class="site-window">
+            <div class="input-window input-textarea" style="border: 1px red  soild;">
+               <div class="timeline-body">
+                    <ul id="rzlist">
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="footer-window" class="footer-window">
+            <div><a target="_blank" href="https://github.com/chenwansal/c10navigation"> GitHub-C10</a></div>
+            <div><i>作者: xxx</i>&nbsp; / &nbsp;<a target="_blank" href="mailto: xxxx">邮箱:
+                    xxxx</a>&nbsp; / &nbsp;<a target="_blank"
+                    href="xxx">xxxx</a></div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" charset="utf-8">
+        axios.get('api/list.php').then(res=>{
+            console.log(res)
+            if(res.status){
+                HtmlStr=""
+                for(var i=0;i<res.data.results.length;i++){
+                   midHtml=res.data.results[i]
+                   HtmlStr+='<li><div class="bullet red"></div><div class="desc"><div class="date-node">'+midHtml.update+'</div><div class="child-node"><div class="node-title">'+midHtml.title+'</div><div class="node-content">'+midHtml.html+'</div></div></div></li>';
+               }
+               HtmlStr+='<li><div class="bullet red"></div><div class="desc"><div class="date-node">之前</div></div></li>'
+               console.log(HtmlStr)
+               $("#rzlist").html(HtmlStr);
+            }
+        }) 
+    </script>
+
+</html>
+
+
